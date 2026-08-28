@@ -23,11 +23,11 @@ while salida == False:
         case "2":
             afd.crear_portxt()
         case "3":
-            print("Hola")
+            afd.definicion()
         case "4":
-            print("Hola")
+            afd.tabla_trans()
         case "5":
-            print("Hola")
+            afd.validar_automata()
         case "6":
             print("Hola")
         case "7":
