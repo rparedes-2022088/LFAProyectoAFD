@@ -29,11 +29,11 @@ while salida == False:
         case "5":
             afd.validar_automata()
         case "6":
-            print("Hola")
+            afd.evaluar_cadena()
         case "7":
-            print("Hola")
+            afd.evaluar_archivo_cadenas()
         case "8":
-            print("Hola")
+            afd.consultar_historial()
         case "9":
             print("Hola")
         case "10":

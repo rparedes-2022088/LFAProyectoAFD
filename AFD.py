@@ -9,6 +9,7 @@ class AFD:
         self.inicial = ""
         self.finales = set()
         self.transiciones = {}
+        self.historial_evaluaciones = []
 
     def crear_manualmente(self):
         print("--- Creación de AFD Manual ---")
@@ -155,3 +156,86 @@ class AFD:
             print("¡Validación exitosa! El autómata es un AFD determinista y consistente.")
             
         return es_valido
+
+    
+
+    def evaluar_cadena(self, cadena = None):
+        #Si no se envía una cadena desde el archivo se lo pide al usuario
+        if cadena is None:
+            cadena = input("Ingrese una cadena (ej: ababa, abab, babab)")
+
+        #para validar que todos los símobolos pertenezcan al alfabeto
+        for simbolo in cadena:
+            if simbolo not in self.alfabeto:
+                print(f"Error: el símbolo {simbolo} no pertenece al alfabeto definido")
+                return #detiene la evaluación sin colapsar el programa
+
+        #comenzar en el orden definido (estado inicial)
+        estado_actual = self.inicial
+
+        print("\n==== Ejecución ====")
+
+        #procesar los simbolos en el orden ingresado
+        for simbolo in cadena:
+            #aplicar la función de transición usando el diccionario
+            siguiente_estado = self.transiciones.get(estado_actual, {}).get(simbolo)
+
+            if siguiente_estado is None or siguiente_estado == "":
+                print(f"Error: el autómata se atascó no nay transición para d({estado_actual}, {simbolo})")
+                return
+
+            print(f"Estado actual: {estado_actual} | Símbolo procesado: {simbolo} | Siguiente estado: {siguiente_estado}")
+
+            estado_actual = siguiente_estado
+
+        #deterinar el estado final e dinicar si fue aceptada o rechazada
+        if estado_actual in self.finales:
+            veredicto = 'Aceptado'
+        else:
+            veredicto = 'Rechazado'
+
+        print(f"Veredicto final: {veredicto} (El autómata se detuvo en '{estado_actual}')")
+
+        #guardar en el historial para la opción del historial
+        self.historial_evaluaciones.append({
+            "cadena":cadena,
+            "estado_final":estado_actual,
+            "veredicto":veredicto
+        })
+
+    def evaluar_archivo_cadenas(self):
+        ruta = filedialog.askopenfilename()
+        if not ruta:
+            return
+        try:
+            with open(ruta, "r", encoding="utf-8") as archivo:
+                lineas = archivo.readlines()
+
+                if not lineas:
+                    print("El archivo está vaío")
+                    return
+
+                print(f"\nEvaluando {len(lineas)} cadenas del archivo...")
+
+                for linea in lineas:
+                    #Quitar saltos de linea y espacios en blanco de los extremos
+                    cadena_limpia = linea.strip()
+                    print(f"\n == Evaluando cadena: {cadena_limpia}")
+                    self.evaluar_cadena(cadena = cadena_limpia) #reutilizamos la función de la opción anterior
+
+        except FileNotFoundError:
+            print(f"Error: no se encontro el archivo en la ruta {ruta}")
+        except Exception as e:
+            print(f"Ocurrió un error inesperado al leer el archivo: {e}")
+
+    def consultar_historial(self):
+        print("\n == Historial de evaluaciones ==")
+
+        if not self.historial_evaluaciones:
+            print("Aún no hay historial, vuelve pronto")
+            return
+
+        #recorrer e imprimir cada registro
+        for indice, registro in enumerate(self.historial_evaluaciones, start=1):
+            cad_formato = registro['cadena'] if registro['cadena'] != "" else "Vacía (Epsilon)"
+            print(f"{indice}. Cadena: {cad_formato} | Estado final: {registro['estado_final']} | resultado: {registro['veredicto']}")
