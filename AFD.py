@@ -146,7 +146,33 @@ class AFD:
                 elif destino not in self.estados:
                     print(f"[Error] El estado destino '{destino}' de d({estado}, {simbolo}) no pertenece a Q.")
                     es_valido = False
-
+        print("\n==== Análisis Estructural del Autómata ====")
+        if not self.inicial or self.inicial not in self.estados:
+            print("[Error] No se puede realizar el análisis sin un estado inicial válido.")
+            return
+        alcanzables = set([self.inicial])
+        cola = [self.inicial]
+        while cola:
+            estado_actual = cola.pop(0)
+            transiciones_estado = self.transiciones.get(estado_actual, {})
+            for simbolo, destino in transiciones_estado.items():
+                if destino != "" and "," not in destino and destino in self.estados:
+                    if destino not in alcanzables:
+                        alcanzables.add(destino)
+                        cola.append(destino)
+        inaccesibles = self.estados - alcanzables
+        finales_alcanzables = self.finales.intersection(alcanzables)
+        lenguaje_vacio = len(finales_alcanzables) == 0
+        print(f"Estados alcanzables: {', '.join(sorted(alcanzables))}")
+        if inaccesibles:
+            print(f"Estados inaccesibles: {', '.join(sorted(inaccesibles))}")
+        else:
+            print("Estados inaccesibles: Ninguno (Todos son alcanzables)")
+        if finales_alcanzables:
+            print(f"Estados finales alcanzables: {', '.join(sorted(finales_alcanzables))}")
+        else:
+            print("Estados finales alcanzables: Ninguno")
+        print(f"¿El lenguaje reconocido podría ser vacío?: {'Sí' if lenguaje_vacio else 'No'}")
         print("-" * 50)
         if not es_afd:
             print("La estructura corresponde a un AFND, no a un AFD.")
@@ -154,8 +180,6 @@ class AFD:
             print("El autómata tiene errores de consistencia en su tupla.")
         else:
             print("¡Validación exitosa! El autómata es un AFD determinista y consistente.")
-            
-        return es_valido
 
     
 
