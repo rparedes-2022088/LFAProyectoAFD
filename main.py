@@ -5,6 +5,7 @@ historial = []
 afd = AFD.AFD()
 print("Bienvenido al sistema de validacion y simulacion de Automatas finitos deterministas")
 while salida == False:
+    #se mantiene con las primeras 3 opciones hasta que se ingrese un autómata para evaluar
     if(caso == 0):
         print("=====================================================================================")
         opcion = input("""Seleccione una opción:
@@ -24,6 +25,7 @@ while salida == False:
                 salida = True
             case _:
                 print("Opción invalida, intente nuevamente")
+    #avanza a las demás opciones si es que ya hay un autómata cargado
     elif(caso == 1):
         print("=====================================================================================")
         opcion = input("""Seleccione una opción:
@@ -51,6 +53,7 @@ while salida == False:
                 afd.consultar_historial()
             case "7":
                 caso = 0
+                #regresa al caso 0 para poder cargar uno nuevo
             case "8":
                 print("Saliendo del programa...")
                 salida = True

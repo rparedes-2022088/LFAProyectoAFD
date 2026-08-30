@@ -3,6 +3,8 @@ from tkinter import filedialog
 
 class AFD:
     def __init__(self):
+        #Inicialización del sistema: se definen las estructuras de datos apropiadas
+        # (cadenas, conjuntos y diccionarios) para representar la tupla formal del autómata
         self.nombre = ""
         self.estados = set()
         self.alfabeto = set()
@@ -24,6 +26,7 @@ class AFD:
         self.finales = set(finales_str.strip().split(','))
         print("\n--- Ingreso de Transiciones ---")
         print("NOTA: Si un estado no tiene transición con un símbolo, simplemente presione Enter (déjelo en blanco).")
+        #Se anida un diccionario para evitar el uso de cadenas extensas de if/else o un "match" en este caso
         for estado in sorted(self.estados):
             self.transiciones[estado] = {}
             for simbolo in sorted(self.alfabeto):
@@ -32,6 +35,7 @@ class AFD:
                     self.transiciones[estado][simbolo] = siguiente
         
     def crear_portxt(self):
+        #lógica de carga mediante intefaz gráfica ("abre el explorador de archivos") para evitar que el usuario escriba la dirección del archivo completa
         ruta = filedialog.askopenfilename()
         if not ruta:
             return
@@ -118,17 +122,23 @@ class AFD:
     
     def validar_automata(self):
         print("\n==== Validación Estructural del Autómata ====")
+        #se garantiza la integridad del AFD validando restricciones teóricas de la quintupla antes
+        #de procesar cualquier cadena
         es_valido = True
         es_afd = True
+
+        #1 validacion de estados: asegurar que q0 pertenece a Q
         if self.inicial not in self.estados:
             print(f"[Error] El estado inicial '{self.inicial}' no pertenece al conjunto de estados Q.")
             es_valido = False
 
+        #1.1 validacion de estados: asegurar que F se subconjunto de Q
         if not self.finales.issubset(self.estados):
             estados_invalidos = self.finales - self.estados
             print(f"[Error] Los estados finales {estados_invalidos} no pertenecen al conjunto de estados Q.")
             es_valido = False
 
+        #2 y 3 consistencia de transiciones y verificación determinista
         for estado in sorted(self.estados):
             for simbolo in sorted(self.alfabeto):
                 destino = self.transiciones.get(estado, {}).get(simbolo, "")
@@ -150,6 +160,8 @@ class AFD:
         if not self.inicial or self.inicial not in self.estados:
             print("[Error] No se puede realizar el análisis sin un estado inicial válido.")
             return
+
+        #logica de búsqueda en anchura (BFS) para determinar la conectividad del grafo del autómata
         alcanzables = set([self.inicial])
         cola = [self.inicial]
         while cola:
@@ -250,6 +262,7 @@ class AFD:
         except FileNotFoundError:
             print(f"Error: no se encontro el archivo en la ruta {ruta}")
         except Exception as e:
+            #captura general de excepciones para evitar que el programa "truene"
             print(f"Ocurrió un error inesperado al leer el archivo: {e}")
 
     def consultar_historial(self):
