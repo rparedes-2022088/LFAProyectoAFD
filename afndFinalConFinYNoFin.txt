@@ -1,0 +1,10 @@
+NOMBRE=AFND_MacroFinal_Mixto
+ESTADOS=q0,q1
+ALFABETO=a,b
+INICIAL=q0
+FINALES=q1
+TRANSICIONES:
+q0,a,q0|q1
+q0,b,q0
+q1,a,q1
+q1,b,q1
