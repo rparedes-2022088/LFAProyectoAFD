@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-from afd import AFD
+import AFD
 
 class AFND:
     def __init__(self):
@@ -24,7 +24,7 @@ class AFND:
         self.finales = set(finales_str.strip().split(','))
         
         print("\n--- Ingreso de Transiciones ---")
-        print("NOTA: Ingrese los múltiples destinos separados por espacio (ej. q0 q1).")
+        print("NOTA: Ingrese los múltiples destinos separados por coma (ej. q0,q1).")
         print("NOTA: Si no hay transición (conjunto vacío), presione Enter o ingrese Ø.")
         
         for estado in sorted(self.estados):
@@ -35,7 +35,7 @@ class AFND:
                 if siguientes == "" or siguientes == "Ø":
                     self.transiciones[estado][simbolo] = set()
                 else:
-                    self.transiciones[estado][simbolo] = set(siguientes.split(" "))
+                    self.transiciones[estado][simbolo] = set(siguientes.split(","))
 
     def cargar_portxt(self):
         ruta = filedialog.askopenfilename()
@@ -68,14 +68,14 @@ class AFND:
                         if destinos_o == "Ø" or destinos_o == "":
                             destinos = set()
                         else:
-                            destinos = set(destinos_o.split(" "))
+                            destinos = set(destinos_o.split("|"))
                             
                         self.transiciones[origen][simbolo] = destinos
 
     def convertir_a_afd(self):
         print("\n--- Iniciando conversión de AFND a AFD ---")
         
-        nuevo_afd = AFD()
+        nuevo_afd = AFD.AFD()
         nuevo_afd.nombre = f"AFD_eq_{self.nombre}"
         nuevo_afd.alfabeto = self.alfabeto.copy()
         
