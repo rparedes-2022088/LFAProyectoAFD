@@ -89,6 +89,7 @@ while salida == False:
                         afd.consultar_historial()
                 case "8":
                     caso = 0
+                    esAfnd = False
                     #regresa al caso 0 para poder cargar uno nuevo
                 case "9":
                     print("Saliendo del programa...")
