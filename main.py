@@ -1,11 +1,13 @@
 import AFD
 import afnd
+import AutomataPila
 salida = False
 esAfnd = False
 caso = 0
 historial = []
 afd = AFD.AFD()
 afnd = afnd.AFND()
+adp = AutomataPila.AutomataPila()
 print("Bienvenido al sistema de validacion y simulacion de Automatas finitos deterministas")
 while salida == False:
     #se mantiene con las primeras 3 opciones hasta que se ingrese un autómata para evaluar
@@ -16,7 +18,9 @@ while salida == False:
     2. Cargar AFD desde archivo .txt
     3. Crear AFND manualmente
     4. Cargar AFND desde archivo .txt
-    5. Salir\n""")
+    5. Crear ADP manualmente
+    6. Cargar ADP desde archivo .txt
+    7. Salir\n""")
         print("=====================================================================================")
         match opcion:
             case "1":
@@ -34,6 +38,12 @@ while salida == False:
                 esAfnd = True
                 caso = 1
             case "5":
+                adp.crear_manualmente()
+                caso = 2
+            case "6":
+                adp.cargar_portxt()
+                caso = 2
+            case "7":
                 print("Saliendo del programa...")
                 salida = True
             case _:
@@ -96,6 +106,35 @@ while salida == False:
                     salida = True
                 case _:
                     print("Opción invalida, intente nuevamente")
+        elif caso == 2:
+            print("=====================================================================================")
+            opcion = input("""Seleccione una opción:
+                1. Validar la estructura del autómata
+                2. Mostrar tabla
+                3. Evaluar una cadena
+                4. Evaluar un archivo de cadenas
+                5. Consultar el historial de evaluaciones
+                6. Cargar o crear otro autómata
+                7. Salir\n""")
+            print("=====================================================================================")
+            match opcion:
+                case "1":
+                    adp.validar_automata()
+                case "2":
+                    adp.mostrar_tabla()
+                case "3":
+                    adp.simular_cadena()
+                case "4":
+                    adp.evaluar_archivo_cadenas()
+                case "5":
+                    adp.consultar_historial()
+                case "6":
+                    caso = 0
+                case "7":
+                    print("Saliendo del programa...")
+                    salida = True
+                case _:
+                    print("Opción invalida, intente nuevamente") 
         else:
             print("=====================================================================================")
             opcion = input("""Seleccione una opción:
