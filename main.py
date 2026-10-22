@@ -105,35 +105,6 @@ while salida == False:
                     print("Saliendo del programa...")
                     salida = True
                 case _:
-                    print("Opción invalida, intente nuevamente")
-        elif caso == 2:
-            print("=====================================================================================")
-            opcion = input("""Seleccione una opción:
-                1. Validar la estructura del autómata
-                2. Mostrar tabla
-                3. Evaluar una cadena
-                4. Evaluar un archivo de cadenas
-                5. Consultar el historial de evaluaciones
-                6. Cargar o crear otro autómata
-                7. Salir\n""")
-            print("=====================================================================================")
-            match opcion:
-                case "1":
-                    adp.validar_automata()
-                case "2":
-                    adp.mostrar_tabla()
-                case "3":
-                    adp.simular_cadena()
-                case "4":
-                    adp.evaluar_archivo_cadenas()
-                case "5":
-                    adp.consultar_historial()
-                case "6":
-                    caso = 0
-                case "7":
-                    print("Saliendo del programa...")
-                    salida = True
-                case _:
                     print("Opción invalida, intente nuevamente") 
         else:
             print("=====================================================================================")
@@ -186,3 +157,42 @@ while salida == False:
                     salida = True
                 case _:
                     print("Opción invalida, intente nuevamente")
+    elif caso == 2:
+        print("=====================================================================================")
+        opcion = input("""Seleccione una opción:
+            1. Mostrar definición formal
+            2. Mostrar tabla de transición
+            3. Validar la estructura del autómata
+            4. Evaluar una cadena
+            5. Evaluar un archivo de cadenas
+            6. Consultar el historial de evaluaciones
+            7. Cargar o crear otro autómata
+            8. Salir\n""")
+        print("=====================================================================================")
+        match opcion:
+            case "1":
+                print(f"Nombre: {adp.nombre}")
+                print(f"Tipo: {adp.tipo}")
+                print(f"Estados (Q): {adp.estados}")
+                print(f"Alfabeto (Σ): {adp.alfabeto}")
+                print(f"Alfabeto de Pila (Γ): {adp.alfabeto_pila}")
+                print(f"Estado Inicial (q0): {adp.inicial}")
+                print(f"Símbolo Inicial de Pila (Z0): {adp.inicial_pila}")
+                print(f"Estados Finales (F): {adp.finales}")
+            case "2":
+                adp.mostrar_tabla()
+            case "3":
+                adp.validar_automata()
+            case "4":
+                adp.evaluar_cadena()
+            case "5":
+                adp.evaluar_archivo_cadenas()
+            case "6":
+                adp.consultar_historial()
+            case "7":
+                caso = 0
+            case "8":
+                print("Saliendo del programa...")
+                salida = True
+            case _:
+                print("Opción invalida, intente nuevamente")

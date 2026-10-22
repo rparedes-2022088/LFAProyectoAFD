@@ -192,7 +192,7 @@ class AutomataPila:
             if len(restante) == 0 and estado in self.finales:
                 aceptada = True
                 estado_aceptacion = estado
-                print(f"\n¡Cadena ACEPTADA en la Rama {rama_id}!")
+                print(f"\n¡Cadena ACEPTADA")
                 for linea in traza:
                     print(linea)
                 break
@@ -218,7 +218,7 @@ class AutomataPila:
                     elementos_reemplazo = reemplazo.split(";")
                     nueva_pila.extend(reversed(elementos_reemplazo))
                     
-                nuevo_registro = f"Paso {paso} [Rama {rama_id}.{i+1}]: Est: {estado} | Ent: {restante} | Pila_ant: {pila} | Lee: {simbolo_usado} | Desapila: {tope_actual} -> Est: {dest} | Apila: {reemplazo} | Pila_nuev: {nueva_pila}"
+                nuevo_registro = f"Paso {paso} Est: {estado} | Ent: {restante} | Pila_ant: {pila} | Lee: {simbolo_usado} | Desapila: {tope_actual} -> Est: {dest} | Apila: {reemplazo} | Pila_nuev: {nueva_pila}"
                 
                 cola.append((paso + 1, f"{rama_id}.{i+1}", dest, nueva_entrada, nueva_pila, traza + [nuevo_registro], contador + 1))
                 
@@ -226,7 +226,7 @@ class AutomataPila:
             veredicto = 'Aceptado'
         else:
             veredicto = 'Rechazado'
-            print("\nCadena RECHAZADA. Todas las ramas finalizaron sin éxito o excedieron el límite de exploración.")
+            print("\nCadena RECHAZADA.")
 
         print(f"Veredicto final: {veredicto}")
 
